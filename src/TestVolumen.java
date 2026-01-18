@@ -8,7 +8,7 @@ public class TestVolumen {
         System.out.println("--- INICIO PRUEBA DE VOLUMEN Y ESTRÉS ---");
 
         long tiempoInicio = System.currentTimeMillis();
-        int totalPruebas = 300_000_000; // cien millónes de verificaciones
+        int totalPruebas = 100_000_000; // cien millónes de verificaciones
         int erroresDetectados = 0; // "Errores" aquí serían excepciones no controladas
 
         System.out.println("Cargando " + totalPruebas + " fechas aleatorias...");

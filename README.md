@@ -158,3 +158,16 @@ Se ha verificado mediante script externo (`TestVolumen.java`) que la lógica sop
 ---
 **Autor:** Estudiante de DAM
 **Asignatura:** Desarrollo de Interfaces - Unidad 8
+## 🛡️ Seguridad Avanzada (Prevención de Exploits)
+Además de la validación de formato, se han implementado contramedidas contra ataques comunes en aplicaciones, según lo estudiado en el **Capítulo 9: Pruebas de Seguridad**:
+
+1.  **Prevención de DoS (Denegación de Servicio):**
+    * **Mecanismo:** Contador de `MAX_INTENTOS_FALLIDOS = 5`.
+    * **Objetivo:** Si un usuario (o script automatizado) introduce formatos inválidos repetidamente, el sistema interpreta un posible ataque o mal funcionamiento y bloquea la sesión, finalizando el programa.
+
+2.  **Prevención de Desbordamiento (Buffer Overflow):**
+    * **Mecanismo:** Método auxiliar `leerEntradaSegura()` que impone un límite estricto de `MAX_LONGITUD_INPUT = 10` caracteres.
+    * **Objetivo:** Evita que la inserción de cadenas masivas (ej: copiar y pegar un libro entero en la consola) sature la memoria de la JVM o cause comportamientos inesperados en el `Scanner`.
+
+3.  **Sanitización de Salida:**
+    * No se exponen trazas de pila (`stack traces`) completas al usuario en caso de error, solo mensajes controlados, evitando la fuga de información sobre la estructura interna del código.
