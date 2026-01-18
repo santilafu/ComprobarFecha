@@ -8,7 +8,7 @@ public class TestVolumen {
         System.out.println("--- INICIO PRUEBA DE VOLUMEN Y ESTRÉS ---");
 
         long tiempoInicio = System.currentTimeMillis();
-        int totalPruebas = 1_000_000; // Un millón de verificaciones
+        int totalPruebas = 300_000_000; // cien millónes de verificaciones
         int erroresDetectados = 0; // "Errores" aquí serían excepciones no controladas
 
         System.out.println("Cargando " + totalPruebas + " fechas aleatorias...");
@@ -29,12 +29,15 @@ public class TestVolumen {
         }
 
         long tiempoFin = System.currentTimeMillis();
-        long duracion = tiempoFin - tiempoInicio;
+        long tiempoTotal = tiempoFin - tiempoInicio;
+        long duracion = (tiempoFin - tiempoInicio)/1000; // Duración en segundos
 
         System.out.println("--- RESULTADOS ---");
         System.out.println("Pruebas ejecutadas: " + totalPruebas);
         System.out.println("Excepciones críticas: " + erroresDetectados);
-        System.out.println("Tiempo total: " + duracion + " ms");
+        System.out.println("Tiempo total: " + tiempoTotal + " ms");
+        //Si tarda mucho tiempo es mejor sacar la duracion en segundos
+        System.out.println("Tiempo total: " + duracion + "segundos");
         System.out.println("Velocidad: " + (totalPruebas / (duracion > 0 ? duracion : 1)) + " verificaciones/ms");
 
         if (duracion < 1000) {

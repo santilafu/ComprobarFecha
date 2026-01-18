@@ -95,3 +95,66 @@ Siguiendo los conceptos de usabilidad vistos en la Unidad 8:
 * **Feedback Descriptivo:** Se ha implementado un método auxiliar `obtenerMotivoError`.
 * **Objetivo:** En lugar de un error genérico ("False"), el sistema informa al usuario del fallo exacto (ej: *"Este año NO es bisiesto, febrero solo llega al 28"*).
 * **Justificación:** Esto reduce la frustración del usuario final y facilita la corrección de datos durante las pruebas manuales y de aceptación.
+
+## 🛡️ Validación de Formato de Entrada (Input Sanitization)
+Para evitar entradas ilógicas como `004 - 0004 - 01995`, que matemáticamente son correctas pero formalmente inválidas, se ha implementado una capa de validación previa mediante **Expresiones Regulares (Regex)**:
+
+* **Días y Meses:** Se restringe la entrada a un máximo de 2 dígitos (`^\d{1,2}$`).
+    * *Resultado:* `04` es válido, pero `004` es rechazado inmediatamente por error de formato.
+* **Años:** Se obliga a usar un formato estricto de 4 dígitos (`^\d{4}$`).
+    * *Resultado:* `1995` es válido, pero `95` o `19995` son rechazados.
+
+Esto separa la **Validación Sintáctica** (¿Está bien escrito?) de la **Validación Semántica** (¿Tiene sentido la fecha?), robusteciendo la aplicación.
+# Proyecto: Comprobando Fechas - Validación y Pruebas de Software
+
+## 📖 Descripción del Proyecto
+Este proyecto implementa una aplicación en Java para la verificación de fechas, aplicando el ciclo completo de pruebas de software según la **Unidad 8 de Desarrollo de Interfaces**. El sistema valida días, meses y años teniendo en cuenta las reglas del calendario gregoriano (años bisiestos) y aplica restricciones de seguridad lógica y de formato.
+
+## 🎯 Objetivos Cumplidos
+1.  **Desarrollo Funcional:** Creación de un programa principal (`main`) interactivo.
+2.  **Pruebas de Caja Negra y Blanca:** Detección y corrección de errores lógicos en el código base proporcionado.
+3.  **Pruebas de Regresión:** Verificación de que las correcciones no introducen nuevos fallos.
+4.  **Pruebas de Seguridad:** Sanitización de entradas mediante **Regex** y límites de rango temporal.
+5.  **Pruebas de Usabilidad:** Implementación de feedback descriptivo para el usuario.
+6.  **Pruebas de Rendimiento:** Verificación de estabilidad bajo carga (simulación).
+
+## 🛠️ Tecnologías y Estrategia
+* **Lenguaje:** Java (JDK 8+).
+* **Librerías:** `java.util.Scanner`, `java.time.LocalDate`.
+* **Estrategia de Pruebas:** *Bottom-Up* (Desde las pruebas unitarias de métodos hasta la integración en el `main`).
+
+---
+
+## 🛡️ Seguridad y Robustez (Input Sanitization)
+Siguiendo los criterios de pruebas de seguridad y robustez, se ha implementado una capa de validación estricta antes de procesar la lógica:
+
+* **Validación de Formato (Regex):** Se impide la entrada de datos con formatos no estándar (ej: `005` o `02023`).
+    * Días/Meses: `^\d{1,2}$` (Máximo 2 dígitos).
+    * Años: `^\d{4}$` (Exactamente 4 dígitos).
+* **Validación de Rango (Boundary Testing):**
+    * *Límite Inferior:* 1900.
+    * *Límite Superior:* Año actual (dinámico con `LocalDate.now()`).
+* **Resiliencia:** El sistema captura excepciones (`try-catch`) para evitar cierres inesperados ante entradas no numéricas.
+
+## 👤 Usabilidad y Experiencia de Usuario
+Para superar las Pruebas de Aceptación, se ha mejorado la interacción:
+* **Feedback Detallado:** Se ha creado el método auxiliar `obtenerMotivoError` que informa de la causa exacta del fallo (ej: *"Febrero bisiesto solo llega hasta el día 29"*), en lugar de un error genérico.
+* **Interfaz Clara:** Mensajes guiados y bucle de repetición automática en caso de error de formato.
+
+## 📊 Resumen de Resultados de Pruebas (Regresión)
+
+| ID | Entrada (D/M/A) | Tipo de Prueba | Resultado Esperado | Resultado Obtenido | Estado |
+|:---|:---|:---|:---|:---|:---|
+| **P-01** | `29/02/2024` | Caja Negra (Bisiesto) | **Válida** | Válida | ✅ PASA |
+| **P-02** | `29/02/2023` | Caja Negra (No Bisiesto) | **Inválida** | Inválida (Motivo correcto) | ✅ PASA |
+| **P-03** | `30/02/2023` | Caja Negra (Límite) | **Inválida** | Inválida | ✅ PASA |
+| **P-04** | `31/04/2023` | Caja Negra (Mes 30 días) | **Inválida** | Inválida | ✅ PASA |
+| **P-05** | `005` (Día) | Seguridad (Formato) | **Error de Formato** | Detectado y rechazado | ✅ PASA |
+| **P-06** | `1899` (Año) | Seguridad (Rango) | **Inválida** | Inválida (Anterior a 1900) | ✅ PASA |
+
+## 🚀 Pruebas de Volumen y Estrés
+Se ha verificado mediante script externo (`TestVolumen.java`) que la lógica soporta ciclos de 1.000.000 de verificaciones aleatorias sin desbordamiento de memoria ni excepciones no controladas, con un tiempo de respuesta medio despreciable (<1ms).
+
+---
+**Autor:** Estudiante de DAM
+**Asignatura:** Desarrollo de Interfaces - Unidad 8
