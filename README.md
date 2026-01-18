@@ -89,3 +89,9 @@ Estas pruebas finales validan si el software cumple con las expectativas reales 
 * **Prueba:** Usuario intenta introducir una fecha futura por error.
 * **Resultado:** El sistema la rechaza, protegiendo la integridad de los datos.
 * **Conclusión:** El software cumple con los requisitos funcionales y de usabilidad esperados. Se da el **Visto Bueno (Go)** para el lanzamiento de la versión Release Candidate.
+
+## 👤 Mejoras de Usabilidad y Experiencia de Usuario (UX)
+Siguiendo los conceptos de usabilidad vistos en la Unidad 8:
+* **Feedback Descriptivo:** Se ha implementado un método auxiliar `obtenerMotivoError`.
+* **Objetivo:** En lugar de un error genérico ("False"), el sistema informa al usuario del fallo exacto (ej: *"Este año NO es bisiesto, febrero solo llega al 28"*).
+* **Justificación:** Esto reduce la frustración del usuario final y facilita la corrección de datos durante las pruebas manuales y de aceptación.

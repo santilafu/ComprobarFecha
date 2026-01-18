@@ -1,24 +1,18 @@
-import java.time.LocalDate;
 import java.util.Scanner;
+import java.time.LocalDate;
 
 public class Fechas {
 
-    /**
-     * PROGRAMA PRINCIPAL (Interfaz de Usuario)
-     * Actúa como driver para las pruebas de integración manuales.
-     */
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int dia, mes, anio;
         String continuar;
 
-        System.out.println("=== 📅 VERIFICADOR DE FECHAS PRO 2.0 ===");
-        System.out.println("Sistema listo para pruebas de integración y usuario.");
+        System.out.println("=== 📅 VERIFICADOR DE FECHAS FINAL (Con Feedback) ===");
 
         do {
             try {
-                // Entradas (Input)
-                System.out.println("\nIntroduce los datos de la fecha a comprobar:");
+                System.out.println("\nIntroduce los datos de la fecha:");
                 System.out.print("   > Día: ");
                 dia = scanner.nextInt();
                 System.out.print("   > Mes: ");
@@ -26,83 +20,84 @@ public class Fechas {
                 System.out.print("   > Año: ");
                 anio = scanner.nextInt();
 
-                // Integración: El main llama a los métodos de lógica.
-                // Si la comunicación falla aquí, la prueba de integración falla.
+                // 1. Validamos con el método booleano (Requisito PDF)
                 boolean esCorrecta = fechaCorrecta(dia, mes, anio);
 
-                // Extra: Llamamos a añoBisiesto solo para informar al usuario (valor añadido)
-                boolean esBisiesto = añoBisiesto(anio);
-
-                // 3. Salidas (Output)
                 System.out.println("   --------------------------------");
                 if (esCorrecta) {
-                    System.out.println(" RESULTADO: La fecha es VÁLIDA.");
-                    if (esBisiesto && mes == 2) {
-                        System.out.println("      (Nota: Año bisiesto detectado correctamente)");
+                    System.out.println("FECHA VÁLIDA.");
+                    if (añoBisiesto(anio) && mes == 2) {
+                        System.out.println("      (Info: Es un año bisiesto)");
                     }
                 } else {
-                    System.out.println(" RESULTADO: La fecha es INVÁLIDA.");
+                    // 2. Si falla, llamamos al método explicativo para saber por qué
+                    System.out.println("FECHA INVÁLIDA.");
+                    String motivo = obtenerMotivoError(dia, mes, anio);
+                    System.out.println("      📝 Motivo: " + motivo);
                 }
                 System.out.println("   --------------------------------");
 
             } catch (Exception e) {
-                System.out.println(" Error: Por favor, introduce solo números enteros.");
-                scanner.nextLine(); // Limpiar el buffer del scanner para evitar bucles infinitos
+                System.out.println("Error: Debes introducir números enteros.");
+                scanner.nextLine();
             }
 
-            System.out.print("¿Probar otra fecha? (s/n): ");
+            System.out.print("¿Probar otra? (s/n): ");
             continuar = scanner.next();
 
         } while (continuar.equalsIgnoreCase("s"));
 
-        System.out.println("Cerrando aplicación...");
+        System.out.println("Fin del programa.");
         scanner.close();
     }
 
     /**
-     * LÓGICA DE NEGOCIO: Validador de fechas.
-     * Corregido tras las pruebas unitarias y de regresión.
-     */
-    /**
-     * Validador de fechas con SEGURIDAD AÑADIDA (Límites de rango).
+     * MÉTODO OBLIGATORIO DEL PDF (No tocar firma)
+     * Retorna true/false sin explicaciones.
      */
     public static boolean fechaCorrecta(int dia, int mes, int año) {
-        // 1. Obtener el año actual del sistema
         int anioActual = LocalDate.now().getYear();
 
-        // 2. NUEVA VALIDACIÓN DE SEGURIDAD (Rango 1900 - Actualidad)
-        // Si el año es menor a 1900 O mayor al actual, es incorrecto.
-        if (año < 1900 || año > anioActual) {
-            return false;
-        }
-
-        // 3. Validaciones de meses y días (Lógica estándar)
-        if (mes < 1 || mes > 12 || dia < 1 || dia > 31) {
-            return false;
-        }
-
-        // Meses de 30 días
-        if ((mes == 4 || mes == 6 || mes == 9 || mes == 11) && dia > 30) {
-            return false;
-        }
-
-        // Febrero
-        if (mes == 2) {
-            boolean bisiesto = añoBisiesto(año);
-            if (bisiesto && dia > 29) return false;
-            if (!bisiesto && dia > 28) return false;
-        }
-
-        return true;
+        // Comprobación rápida (reutilizamos la lógica del mensaje para no repetir código)
+        // Si el mensaje de error está vacío (""), es que es correcta.
+        return obtenerMotivoError(dia, mes, año).equals("");
     }
+
     /**
-     * LÓGICA DE NEGOCIO: Calculadora de años bisiestos.
-     * Implementa la regla gregoriana completa.
+     * NUEVO MÉTODO DE USABILIDAD
+     * Analiza la fecha y devuelve un String con el error específico.
+     * Retorna cadena vacía "" si no hay errores.
      */
+    public static String obtenerMotivoError(int dia, int mes, int año) {
+        int anioActual = LocalDate.now().getYear();
+
+        // 1. Validar Año
+        if (año < 1900) return "El año no puede ser anterior a 1900.";
+        if (año > anioActual) return "El año no puede ser futuro (Máximo: " + anioActual + ").";
+
+        // 2. Validar Mes
+        if (mes < 1 || mes > 12) return "El mes debe estar entre 1 y 12.";
+
+        // 3. Validar Día (General)
+        if (dia < 1) return "El día no puede ser negativo o cero.";
+        if (dia > 31) return "Ningún mes tiene más de 31 días.";
+
+        // 4. Validar días específicos de cada mes
+        if ((mes == 4 || mes == 6 || mes == 9 || mes == 11) && dia > 30) {
+            return "El mes " + mes + " solo tiene 30 días.";
+        }
+
+        // 5. Validar Febrero (El más complejo)
+        if (mes == 2) {
+            boolean esBisiesto = añoBisiesto(año);
+            if (esBisiesto && dia > 29) return "Febrero bisiesto solo llega hasta el día 29.";
+            if (!esBisiesto && dia > 28) return "Este año NO es bisiesto, febrero solo llega al 28.";
+        }
+
+        return ""; // Si llega aquí, no hay errores
+    }
+
     public static boolean añoBisiesto(int año) {
-        // Un año es bisiesto si es divisible por 4,
-        // EXCEPTO si es divisible por 100 (fin de siglo),
-        // A MENOS QUE sea divisible por 400.
         return (año % 4 == 0 && año % 100 != 0) || (año % 400 == 0);
     }
 }
