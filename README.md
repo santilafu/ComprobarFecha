@@ -83,6 +83,10 @@ Para superar las pruebas de aceptación del usuario final, se mejoró la interac
 * **Feedback Detallado:** Implementación del método `obtenerMotivoError` que explica la causa exacta del fallo (ej: *"Febrero bisiesto solo llega hasta el día 29"*), en lugar de un error genérico.
 * **Resiliencia:** El sistema recupera el flujo tras un error de formato sin cerrarse abruptamente (bucle `do-while` robusto).
 
+## 🤖 Automatización de Pruebas
+Para cumplir con la recomendación de **automatizar las pruebas unitarias y de regresión**, se ha desarrollado la clase `TestAutomator.java`.
+* **Función:** Ejecuta secuencialmente los casos críticos definidos en la estrategia sin intervención humana.
+* **Ventaja:** Permite verificar la estabilidad del sistema ("Smoke Test") en milisegundos antes de desplegar una nueva versión.
 ---
 **Autor:** Santiago Lafuente Hernández
 

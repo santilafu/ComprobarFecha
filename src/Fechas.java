@@ -14,7 +14,8 @@ public class Fechas {
         String continuar = "s";
         int contadorErrores = 0; // Contador de seguridad
 
-        System.out.println("=== 🛡️ VERIFICADOR DE FECHAS (SECURE EDITION) ===");
+        System.out.println("=== 🛡️ VERIFICADOR DE FECHAS (- Release Candidate) ===");
+        System.out.println("   > Build: Stable | Environment: Production Ready");
         System.out.println("Nota: Por seguridad, el sistema se bloqueará tras " + MAX_INTENTOS_FALLIDOS + " errores consecutivos.");
 
         do {
