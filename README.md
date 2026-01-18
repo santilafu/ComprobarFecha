@@ -101,6 +101,43 @@ Para cumplir con la recomendación de **automatizar las pruebas unitarias y de r
 * **Función:** Ejecuta secuencialmente los casos críticos definidos en la estrategia sin intervención humana.
 * **Ventaja:** Permite verificar la estabilidad del sistema ("Smoke Test") en milisegundos antes de desplegar una nueva versión.
 ---
+## 📖 Manual de Usuario (Guía Rápida)
+Instrucciones para la persona usuaria final sobre cómo interactuar con el **Verificador de Fechas**.
+
+### 1. Formatos Admitidos
+El sistema es estricto para evitar errores. Por favor, introduzca los datos siguiendo estos patrones:
+* **Día:** Número del 1 al 31. (Ejemplos válidos: `5`, `31`. Inválidos: `05`, `005`).
+* **Mes:** Número del 1 al 12. (Ejemplos válidos: `1`, `12`. Inválidos: `01`).
+* **Año:** Número de 4 dígitos entre 1900 y el año actual. (Ejemplo: `1995`. Inválido: `95`).
+
+### 2. Códigos de Error Comunes
+Si la fecha es rechazada, el sistema le indicará el motivo:
+* *Error de Formato:* Ha introducido letras, símbolos o ceros a la izquierda innecesarios.
+* *Lógica Inválida:* Ha intentado crear una fecha imposible (ej: 30 de Febrero).
+* *Bloqueo de Seguridad:* Si falla 5 veces seguidas, el programa se cerrará por su seguridad.
+### 3. Ejecución del Programa
+1. Compile el programa usando `javac Fechas.java`.
+
+### 4. Ejecución de Baterías de Pruebas
+
+`java TestAutomator`  # Para pruebas funcionales rápidas
+
+`java TestRecursos`  # Para auditoría de hardware (RAM/CPU)
+
+---
+
+## 💻 Instrucciones de Instalación y Ejecución
+Pasos para desplegar el proyecto en cualquier entorno compatible con Java.
+
+**Requisitos Previos:**
+* Java Development Kit (JDK) 8 o superior.
+
+**Compilación:**
+```bash
+javac Fechas.java TestAutomator.java TestRecursos.java
+```
+---
+
 **Autor:** Santiago Lafuente Hernández
 
 **Asignatura:** Desarrollo de Interfaces - Unidad 8
