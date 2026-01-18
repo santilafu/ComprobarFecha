@@ -1,3 +1,7 @@
+package org.test;
+
+import org.principal.Fechas;
+
 public class TestVolumen {
 
     /**
@@ -20,7 +24,7 @@ public class TestVolumen {
             int anio = (int) (Math.random() * 3000);  // Años del 0 al 3000
 
             try {
-                // Llamamos a la clase estática Fechas
+                // Llamamos a la clase estática org.principal.Fechas
                 Fechas.fechaCorrecta(dia, mes, anio);
             } catch (Exception e) {
                 erroresDetectados++;

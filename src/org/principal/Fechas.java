@@ -1,3 +1,5 @@
+package org.principal;
+
 import java.util.Scanner;
 import java.time.LocalDate;
 

@@ -1,3 +1,7 @@
+package org.test;
+
+import org.principal.Fechas;
+
 public class TestAutomator {
 
     /**

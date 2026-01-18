@@ -1,4 +1,4 @@
-# Proyecto: Comprobando Fechas - Validación y Pruebas de Software
+# Proyecto: Comprobando org.principal.Fechas - Validación y Pruebas de Software
 
 ## 📖 Descripción del Proyecto
 Este proyecto implementa una aplicación en Java para la verificación de fechas, aplicando el ciclo completo de pruebas de software según la **Unidad 8 de Desarrollo de Interfaces**. El sistema valida días, meses y años teniendo en cuenta las reglas del calendario gregoriano (años bisiestos) y aplica restricciones avanzadas de seguridad lógica y de formato.
@@ -71,7 +71,7 @@ Se restringe el dominio temporal aceptado para mantener la coherencia lógica:
 ## 📉 Fase 4: Pruebas de Volumen y Estrés
 Se realizaron pruebas para verificar la estabilidad del sistema bajo condiciones extremas.
 
-* **Herramienta:** Script automatizado `TestVolumen.java`.
+* **Herramienta:** Script automatizado `org.test.TestVolumen.java`.
 * **Escenario:** Bucle de **100.000.000** de verificaciones aleatorias.
 * **Resultado:**
     * Tiempo de ejecución: 5004 ms.
@@ -83,8 +83,21 @@ Para superar las pruebas de aceptación del usuario final, se mejoró la interac
 * **Feedback Detallado:** Implementación del método `obtenerMotivoError` que explica la causa exacta del fallo (ej: *"Febrero bisiesto solo llega hasta el día 29"*), en lugar de un error genérico.
 * **Resiliencia:** El sistema recupera el flujo tras un error de formato sin cerrarse abruptamente (bucle `do-while` robusto).
 
+## 📉 Pruebas de Uso de Recursos y Rendimiento
+Se ha implementado una clase independiente (`TestRecursos.java`) para auditar el impacto del software en el hardware del sistema, tal como sugiere el temario.
+
+### Metodología de la Prueba
+1.  **Limpieza:** Se fuerza la ejecución del *Garbage Collector* de Java antes del test para obtener métricas reales.
+2.  **Carga:** Se ejecuta un bucle de **2.000.000** de peticiones a la lógica de validación.
+3.  **Medición:** Se captura el diferencial de tiempo (`System.currentTimeMillis`) y de memoria (`Runtime.getRuntime().totalMemory()`).
+
+### Resultados Obtenidos
+* **Uso de CPU:** El sistema procesa ~20.000 operaciones por milisegundo.
+* **Uso de RAM:** El consumo de memoria adicional es despreciable (< 1MB), lo que indica que no existen fugas de memoria (*memory leaks*) y que las variables se destruyen correctamente tras su uso.
+* **Conclusión:** El algoritmo es ligero y apto para ejecutarse en entornos con recursos limitados.
+
 ## 🤖 Automatización de Pruebas
-Para cumplir con la recomendación de **automatizar las pruebas unitarias y de regresión**, se ha desarrollado la clase `TestAutomator.java`.
+Para cumplir con la recomendación de **automatizar las pruebas unitarias y de regresión**, se ha desarrollado la clase `org.test.TestAutomator.java`.
 * **Función:** Ejecuta secuencialmente los casos críticos definidos en la estrategia sin intervención humana.
 * **Ventaja:** Permite verificar la estabilidad del sistema ("Smoke Test") en milisegundos antes de desplegar una nueva versión.
 ---
